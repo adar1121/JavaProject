@@ -22,6 +22,8 @@ public class CoinFactory extends Coin {
     private ArrayList<String> coinTypeResultSaver = new ArrayList<>();
     private  ArrayList<String> oppositeCoinTypeResultSaver = new ArrayList<>();
     private boolean currencyConverterSwitchON = true;
+    private double USDToILSResult;
+    private double ILSToUSDResult;
     @Override
     public double getValue() {
         return 0;
@@ -54,7 +56,7 @@ public class CoinFactory extends Coin {
                 {
                     startOverCorrectAnswer = true;
                 }
-            }catch (Exception e){
+            }catch (IllegalArgumentException e){
                 System.out.println("Invalid Choice, please try again");
             }
         }
@@ -78,30 +80,38 @@ public class CoinFactory extends Coin {
         return coins;
     }
 
+    public void USDToILSConverterResultSaver(){
+        amountSaver.add(resultsIndexSaver, usd.coinAmount);
+        resultSaver.add(resultsIndexSaver, USDToILSResult);
+        coinTypeResultSaver.add(resultsIndexSaver, " USD");
+        oppositeCoinTypeResultSaver.add(resultsIndexSaver, " ILS");
+        resultsIndexSaver++;
+    }
+
+    public void ILSToUSDConverterResultSaver(){
+        amountSaver.add(resultsIndexSaver, ils.coinAmount);
+        resultSaver.add(resultsIndexSaver, ILSToUSDResult);
+        coinTypeResultSaver.add(resultsIndexSaver, " ILS");
+        oppositeCoinTypeResultSaver.add(resultsIndexSaver, " USD");
+        resultsIndexSaver++;
+    }
+
 
 //  converting the coin and save result and user's amount input
     public void coinTypeOrder() {
             switch (coins) {
                 case USD:
                     usd.correctAmountValue = false;
-                    double USDToILSResult = usd.calculate(usd.coinAmount);
+                    USDToILSResult = usd.calculate(usd.coinAmount);
                     System.out.println(usd.coinAmount + " USD = " + USDToILSResult + " ILS");
-                    amountSaver.add(resultsIndexSaver, usd.coinAmount);
-                    resultSaver.add(resultsIndexSaver, USDToILSResult);
-                    coinTypeResultSaver.add(resultsIndexSaver, " USD");
-                    oppositeCoinTypeResultSaver.add(resultsIndexSaver, " ILS");
-                    resultsIndexSaver++;
+                    USDToILSConverterResultSaver();
                     break;
 
                 case ILS:
                     ils.correctAmountValue = false;
-                    double ILSToUSDResult = ils.calculate(ils.coinAmount);
+                    ILSToUSDResult = ils.calculate(ils.coinAmount);
                     System.out.println(ils.coinAmount + " ILS = " + ILSToUSDResult + " USD");
-                    amountSaver.add(resultsIndexSaver, ils.coinAmount);
-                    resultSaver.add(resultsIndexSaver, ILSToUSDResult);
-                    coinTypeResultSaver.add(resultsIndexSaver, " ILS");
-                    oppositeCoinTypeResultSaver.add(resultsIndexSaver, " USD");
-                    resultsIndexSaver++;
+                    ILSToUSDConverterResultSaver();
                     break;
             }
     }
