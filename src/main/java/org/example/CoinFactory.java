@@ -1,6 +1,9 @@
 package org.example;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CoinFactory extends Coin {
+
     private MessageFactory messageFactory = new MessageFactory();
     private ILS ils = new ILS();
     private USD usd = new USD();
@@ -119,19 +123,25 @@ public class CoinFactory extends Coin {
 //   save and print all the previous results
     public void printAllResults(){
         for (int i = 0; i < resultsIndexSaver; i++){
-            resultsPrinter = resultsPrinter +amountSaver.get(i).toString() +coinTypeResultSaver.get(i).toString()
-                    +  " = " + resultSaver.get(i).toString()  + oppositeCoinTypeResultSaver.get(i).toString() + "\n";
+            System.out.println(amountSaver.get(i).toString() + coinTypeResultSaver.get(i).toString() +
+                    " = " + resultSaver.get(i) + oppositeCoinTypeResultSaver.get(i).toString());
         }
-        System.out.println(resultsPrinter);
     }
 
 //   Print and save all results to Text File at Project Path
     public void printAllResultsToText(){
         String filePath = "Results.txt";
         try {
-            Files.writeString(Paths.get(filePath),resultsPrinter);
+            File file = new File(filePath);
+            FileWriter fw = new FileWriter(file);
+            PrintWriter pw = new PrintWriter(fw);
+            for (int i = 0; i < resultsIndexSaver; i++){
+                pw.print(amountSaver.get(i).toString() + coinTypeResultSaver.get(i).toString() +
+                        " = " + resultSaver.get(i) + oppositeCoinTypeResultSaver.get(i).toString() + "\n");
+            }
+            pw.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
