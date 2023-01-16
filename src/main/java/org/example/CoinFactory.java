@@ -1,22 +1,23 @@
 package org.example;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CoinFactory extends Coin {
 
+
     private MessageFactory messageFactory = new MessageFactory();
     private ILS ils = new ILS();
     private USD usd = new USD();
     private Coins coins;
     private StartOver startOver;
+    private int indexArrayList = 0;
     private int resultsIndexSaver = 0;
     private String resultsPrinter = "";
     private String resultsIndexCoinSaver;
@@ -25,9 +26,11 @@ public class CoinFactory extends Coin {
     private ArrayList<Double> amountSaver = new ArrayList<>();
     private ArrayList<String> coinTypeResultSaver = new ArrayList<>();
     private  ArrayList<String> oppositeCoinTypeResultSaver = new ArrayList<>();
+    private ArrayList<Result> resultsList = new ArrayList();
     private boolean currencyConverterSwitchON = true;
     private double USDToILSResult;
     private double ILSToUSDResult;
+    private String filePath = "Results.txt";
     @Override
     public double getValue() {
         return 0;
@@ -90,6 +93,9 @@ public class CoinFactory extends Coin {
         coinTypeResultSaver.add(resultsIndexSaver, " USD");
         oppositeCoinTypeResultSaver.add(resultsIndexSaver, " ILS");
         resultsIndexSaver++;
+        Result result = new Result(usd.getValue()," USD to ILS");
+        resultsList.add(indexArrayList,result);
+        indexArrayList++;
     }
 
     public void ILSToUSDConverterResultSaver(){
@@ -98,6 +104,9 @@ public class CoinFactory extends Coin {
         coinTypeResultSaver.add(resultsIndexSaver, " ILS");
         oppositeCoinTypeResultSaver.add(resultsIndexSaver, " USD");
         resultsIndexSaver++;
+        Result result = new Result(ils.getValue()," ILS to USD");
+        resultsList.add(indexArrayList,result);
+        indexArrayList++;
     }
 
 
@@ -123,14 +132,12 @@ public class CoinFactory extends Coin {
 //   save and print all the previous results
     public void printAllResults(){
         for (int i = 0; i < resultsIndexSaver; i++){
-            System.out.println(amountSaver.get(i).toString() + coinTypeResultSaver.get(i).toString() +
-                    " = " + resultSaver.get(i) + oppositeCoinTypeResultSaver.get(i).toString());
+            System.out.println(resultsList.get(i).getAmountInput() + resultsList.get(i).getResult());
         }
     }
 
 //   Print and save all results to Text File at Project Path
     public void printAllResultsToText(){
-        String filePath = "Results.txt";
         try {
             File file = new File(filePath);
             FileWriter fw = new FileWriter(file);
@@ -144,4 +151,31 @@ public class CoinFactory extends Coin {
             e.printStackTrace();
         }
     }
+
+    public void bonusQuestionResult(){
+        String bonusFilePath = "BonusResults";
+        try {
+            File file = new File(bonusFilePath);
+            FileWriter fw = new FileWriter(file);
+            PrintWriter pw = new PrintWriter(fw);
+            for(int i = 0; i < resultsIndexSaver; i++){
+                pw.println(resultsList.get(i).getAmountInput() + resultsList.get(i).getResult());
+            }
+            pw.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void openResultsFile(){
+        File file = new File(filePath);
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

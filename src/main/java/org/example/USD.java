@@ -4,8 +4,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 public class USD extends Coin{
 
+
+    static RestAPI restAPI = new RestAPI();
     boolean correctAmountValue = false;
-    private final double VALUE = 3.52;
+    private static final double VALUE = restAPI.USDRealValue();
     double coinAmount = 0;
 
 

@@ -4,6 +4,7 @@ public class Main {
         CoinFactory coinFactory = new CoinFactory();
         MessageFactory messageFactory = new MessageFactory();
 
+
         messageFactory.introductionMessage();
 
         coinFactory.currencyConverterSwitch();
@@ -13,5 +14,9 @@ public class Main {
         coinFactory.printAllResults();
 
         coinFactory.printAllResultsToText();
+
+        coinFactory.openResultsFile();
+
+        coinFactory.bonusQuestionResult();
     }
 }

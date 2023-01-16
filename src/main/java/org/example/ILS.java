@@ -4,8 +4,10 @@ import java.util.Scanner;
 
 public class ILS extends Coin{
 
+    private static RestAPI restAPI = new RestAPI();
+
     boolean correctAmountValue = false;
-    private final double VALUE = 0.28;
+    private static final double VALUE = restAPI.ILSRealValue();
     double coinAmount = 0;
 
     //   converting the user's Input from ILS to USD
